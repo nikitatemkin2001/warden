@@ -1,6 +1,6 @@
 FROM ubuntu:latest
 
-RUN apt update && apt upgrade -y && apt install curl git wget htop tmux build-essential jq make lz4 gcc unzip -y
+RUN apt-get update && apt-get upgrade -y && apt-get install apt-utils curl git wget htop tmux build-essential jq make lz4 gcc unzip -y
 
 WORKDIR /app
 
@@ -9,7 +9,8 @@ ENV GO_VER="1.22.5"
 RUN cd $HOME && \
 wget "https://golang.org/dl/go$GO_VER.linux-amd64.tar.gz" && \
 tar -C /usr/local -xzf "go$GO_VER.linux-amd64.tar.gz" && \
-rm "go$GO_VER.linux-amd64.tar.gz"
+rm "go$GO_VER.linux-amd64.tar.gz" && \
+mkdir -p ~/go/bin
 
 ENV PATH="/usr/local/go/bin:${PATH}"
 ENV WALLET="wallet"
@@ -32,18 +33,18 @@ ENV PEERS="b14f35c07c1b2e58c4a1c1727c89a5933739eeea@warden-testnet-peer.itrocket
 RUN wardend init $MONIKER && \
 sed -i -e "s|^node *=.*|node = \"tcp://localhost:${WARDEN_PORT}657\"|" $HOME/.warden/config/client.toml && \
 sed -i -e "/^\[p2p\]/,/^\[/{s/^[[:space:]]*seeds *=.*/seeds = \"$SEEDS\"/}" -e "/^\[p2p\]/,/^\[/{s/^[[:space:]]*persistent_peers *=.*/persistent_peers = \"$PEERS\"/}" $HOME/.warden/config/config.toml && \
-sed -i.bak -e "s%:1317%:${WARDEN_PORT}317%g;
-s%:8080%:${WARDEN_PORT}080%g;
-s%:9090%:${WARDEN_PORT}090%g;
-s%:9091%:${WARDEN_PORT}091%g;
-s%:8545%:${WARDEN_PORT}545%g;
-s%:8546%:${WARDEN_PORT}546%g;
+sed -i.bak -e "s%:1317%:${WARDEN_PORT}317%g; \
+s%:8080%:${WARDEN_PORT}080%g; \
+s%:9090%:${WARDEN_PORT}090%g; \
+s%:9091%:${WARDEN_PORT}091%g; \
+s%:8545%:${WARDEN_PORT}545%g; \
+s%:8546%:${WARDEN_PORT}546%g; \
 s%:6065%:${WARDEN_PORT}065%g" $HOME/.warden/config/app.toml && \
-sed -i.bak -e "s%:26658%:${WARDEN_PORT}658%g;
-s%:26657%:${WARDEN_PORT}657%g;
-s%:6060%:${WARDEN_PORT}060%g;
-s%:26656%:${WARDEN_PORT}656%g;
-s%^external_address = \"\"%external_address = \"$(wget -qO- eth0.me):${WARDEN_PORT}656\"%;
+sed -i.bak -e "s%:26658%:${WARDEN_PORT}658%g; \
+s%:26657%:${WARDEN_PORT}657%g; \
+s%:6060%:${WARDEN_PORT}060%g; \
+s%:26656%:${WARDEN_PORT}656%g; \
+s%^external_address = \"\"%external_address = \"$(wget -qO- eth0.me):${WARDEN_PORT}656\"%; \
 s%:26660%:${WARDEN_PORT}660%g" $HOME/.warden/config/config.toml && \
 sed -i -e "s/^pruning *=.*/pruning = \"custom\"/" $HOME/.warden/config/app.toml && \
 sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \"100\"/" $HOME/.warden/config/app.toml && \
