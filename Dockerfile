@@ -13,7 +13,7 @@ tar -C /usr/local -xzf "go$GO_VER.linux-amd64.tar.gz" && \
 rm "go$GO_VER.linux-amd64.tar.gz" && \
 mkdir -p go/bin
 
-ENV PATH="/usr/local/go/bin:app/go/bin:${PATH}"
+ENV PATH="/usr/local/go/bin:/app/go/bin:${PATH}"
 ENV WALLET="wallet"
 ENV MONIKER="Stake Shark"
 ENV WARDEN_CHAIN_ID="chiado_10010-1"
