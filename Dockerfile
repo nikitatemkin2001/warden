@@ -15,7 +15,7 @@ mkdir -p go/bin
 
 ENV PATH="/usr/local/go/bin:/app/go/bin:${PATH}"
 ENV WALLET="wallet"
-ENV MONIKER="Stake Shark"
+ENV MONIKER="Stake_Shark"
 ENV WARDEN_CHAIN_ID="chiado_10010-1"
 ENV WARDEN_PORT="18"
 
