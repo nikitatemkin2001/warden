@@ -56,4 +56,4 @@ sed -i -e "s/^indexer *=.*/indexer = \"null\"/" $HOME/.warden/config/config.toml
 RUN wget -O $HOME/.warden/config/genesis.json https://server-4.itrocket.net/testnet/warden/genesis.json && \
 wget -O $HOME/.warden/config/addrbook.json  https://server-4.itrocket.net/testnet/warden/addrbook.json
 
-ENTRYPOINT ["wardend", "start", "--home", "/home/ubuntu/.warden"]
+ENTRYPOINT ["wardend", "start", "--home", "/app/.warden"]
