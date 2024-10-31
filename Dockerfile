@@ -55,6 +55,5 @@ sed -i -e "s/^indexer *=.*/indexer = \"null\"/" $HOME/.warden/config/config.toml
 
 RUN wget -O $HOME/.warden/config/genesis.json https://server-4.itrocket.net/testnet/warden/genesis.json && \
 wget -O $HOME/.warden/config/addrbook.json  https://server-4.itrocket.net/testnet/warden/addrbook.json
-RUN wardend tendermint unsafe-reset-all --home $HOME/.warden && curl https://server-4.itrocket.net/testnet/warden/warden_2024-10-31_139550_snap.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.warden
 
 ENTRYPOINT ["wardend", "start", "--home", "/app/.warden"]
