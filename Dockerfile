@@ -2,12 +2,13 @@ FROM ubuntu:latest
 
 RUN apt-get update && apt-get upgrade -y && apt-get install apt-utils curl git wget htop tmux build-essential jq make lz4 gcc unzip -y
 
+ENV HOME=/app
+
 WORKDIR /app
 
 ENV GO_VER="1.22.5"
 
-RUN cd $HOME && \
-wget "https://golang.org/dl/go$GO_VER.linux-amd64.tar.gz" && \
+RUN wget "https://golang.org/dl/go$GO_VER.linux-amd64.tar.gz" && \
 tar -C /usr/local -xzf "go$GO_VER.linux-amd64.tar.gz" && \
 rm "go$GO_VER.linux-amd64.tar.gz" && \
 mkdir -p ~/go/bin
@@ -18,8 +19,7 @@ ENV MONIKER="Stake Shark"
 ENV WARDEN_CHAIN_ID="chiado_10010-1"
 ENV WARDEN_PORT="18"
 
-RUN cd $HOME && \
-rm -rf bin && \
+RUN rm -rf bin && \
 mkdir bin && cd bin && \
 wget https://github.com/warden-protocol/wardenprotocol/releases/download/v0.5.2/wardend_Linux_x86_64.zip && \
 unzip wardend_Linux_x86_64.zip && \
@@ -56,4 +56,4 @@ sed -i -e "s/^indexer *=.*/indexer = \"null\"/" $HOME/.warden/config/config.toml
 RUN wget -O $HOME/.warden/config/genesis.json https://server-4.itrocket.net/testnet/warden/genesis.json && \
 wget -O $HOME/.warden/config/addrbook.json  https://server-4.itrocket.net/testnet/warden/addrbook.json
 
-ENTRYPOINT ["/bin/sh", "-c", "${WARDEND_PATH} start --home ${HOME}/.warden"]
+ENTRYPOINT ["wardend", "start", "--home", "/home/ubuntu/.warden"]
