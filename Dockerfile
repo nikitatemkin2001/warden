@@ -59,3 +59,5 @@ wget -O $HOME/.warden/config/addrbook.json  https://server-4.itrocket.net/testne
 RUN echo '#!/bin/sh' > /app/entrypoint.sh && \
     echo 'sleep 10000' >> /app/entrypoint.sh && \
     chmod +x /app/entrypoint.sh
+    
+ENTRYPOINT ["/app/entrypoint.sh"]
